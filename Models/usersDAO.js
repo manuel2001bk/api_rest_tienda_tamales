@@ -1,7 +1,7 @@
-const bd =require('../configMysql')
+const bd = require('../configMysql')
 
 module.exports = {
-    findByUsername : (username, callback) => {
+    findByUsername: (username, callback) => {
         let sql = 'SELECT * FROM users WHERE userName=?'
         bd.query(sql, username, (err, data) => {
             if (err) throw err
