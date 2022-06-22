@@ -1,16 +1,19 @@
+const usersDao = require('../models/usersDAO')
 
-const bd =require('../configMysql')
-
-findByUsername : (username, callback) => {
-    let sql = 'SELECT * FROM users WHERE userName=?'
-    bd.query(sql,username, (err, data) => {
-        if (err)throw err
-        if (data.length > 0)
-            callback(data[0])
-        else
-            callback(null)
+userNameValidate = (req, res) => {
+    usersDao.findByUsername(req.params.username, data => {
+        try {
+            if (!data) throw new Err("Usuario disponible")
+            res.send({
+                status: true, message: 'Usuario Existente'
+            })
+        } catch (Err) {
+            res.send({
+                status: false, message: 'Usuario disponible'
+            })
+        }
     })
-},
+}
 getAllUsers = (req, res) => {
     userDAO.getAllUsers(data => {
         try {
@@ -26,6 +29,6 @@ getAllUsers = (req, res) => {
     })
 }
 module.exports = {
-    findByUsername,
+    userNameValidate,
     getAllUsers,
 }
