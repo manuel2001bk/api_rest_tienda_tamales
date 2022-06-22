@@ -14,3 +14,6 @@ const userNameValidate = (req, res) => {
         }
     })
 }
+module.exports = {
+    userNameValidate,
+}
