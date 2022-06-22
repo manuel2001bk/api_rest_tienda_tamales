@@ -1,4 +1,6 @@
+
 const bd =require('../configMysql')
+
 findByUsername : (username, callback) => {
     let sql = 'SELECT * FROM users WHERE userName=?'
     bd.query(sql,username, (err, data) => {
@@ -26,5 +28,4 @@ getAllUsers = (req, res) => {
 module.exports = {
     findByUsername,
     getAllUsers,
-    
 }
