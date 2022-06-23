@@ -1,6 +1,6 @@
 const usersDao = require('../models/usersDAO')
 
-userNameValidate = (req, res) => {
+const userNameValidate = (req, res) => {
     usersDao.findByUsername(req.params.username, data => {
         try {
             if (!data) throw new Err("Usuario disponible")
