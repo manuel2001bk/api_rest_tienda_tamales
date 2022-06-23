@@ -5,7 +5,7 @@ const userNameValidate = (req, res) => {
         try {
             if (!data) throw new Err("Usuario disponible")
             res.send({
-                status: true, message: 'Usuario Existente'
+                status: true, message: 'El Usuario Existe'
             })
         } catch (Err) {
             res.send({
@@ -14,6 +14,7 @@ const userNameValidate = (req, res) => {
         }
     })
 }
+
 module.exports = {
     userNameValidate,
 }
