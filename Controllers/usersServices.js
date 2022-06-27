@@ -1,6 +1,5 @@
 const userDAO = require('../models/usersDAO')
 
-
 const getAllUsers = (req, res) => {
     userDAO.getAllUsers(data => {
         try {
