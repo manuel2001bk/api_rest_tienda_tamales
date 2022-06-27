@@ -1,14 +1,21 @@
-const bd = require('../configMysql')
+const userDAO = require('../models/usersDAO')
+
+
+const getAllUsers = (req, res) => {
+    userDAO.getAllUsers(data => {
+        try {
+            if (!data) throw new Err("No existen usuarios")
+            res.send({
+                status: true, body: data
+            })
+        } catch (Err) {
+            res.send({
+                status: false, message: 'No existen usuarios'
+            })
+        }
+    })
+}
 
 module.exports = {
-    getAllUsers : (callback) => {
-        let sql = 'Select * from users'
-        bd.query(sql,(err, data) => {
-            if (err) throw err
-            if (data.length>0)
-                callback(data)
-            else
-                callback(null)
-        })
-    },
+    getAllUsers,
 }
