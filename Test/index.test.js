@@ -207,3 +207,83 @@ describe('funcion getAllUsers',()=>{
             });
     });
 });
+
+describe('funcion login',()=>{
+    it('Se genera el login correctamente', (done) => {
+        chai.request(url)
+            .post('/users/login')
+            .send({
+                userName: 'carl123',
+                password: "1234",
+            })
+            .end(function (err, res) {
+                console.log(res.body)
+                expect(res).to.have.status(200);
+                done();
+            });
+    });
+    it('La contraseña enviada es incorrecta', (done) => {
+        chai.request(url)
+            .post('/users/login')
+            .send({
+                userName: 'carl123',
+                password: "12345",
+            })
+            .end(function (err, res) {
+                console.log(res.body)
+                expect(res).to.have.status(200);
+                done();
+            });
+    });
+    it('El usuario no existe', (done) => {
+        chai.request(url)
+            .post('/users/login')
+            .send({
+                userName: 'edumx25',
+                password: "1234",
+            })
+            .end(function (err, res) {
+                console.log(res.body)
+                expect(res).to.have.status(200);
+                done();
+            });
+    });
+    it('No se envia un usuario', (done) => {
+        chai.request(url)
+            .post('/users/login')
+            .send({
+                password: "1234",
+            })
+            .end(function (err, res) {
+                console.log(res.body)
+                expect(res).to.have.status(200);
+                done();
+            });
+    });
+    it('No se envia una contraseña', (done) => {
+        chai.request(url)
+            .post('/users/login')
+            .send({
+                userName: 'edumx25',
+            })
+            .end(function (err, res) {
+                console.log(res.body)
+                expect(res).to.have.status(200);
+                done();
+            });
+    });
+    it('El usuario no existe', (done) => {
+        chai.request(url)
+            .post('/users/login')
+            .send({
+                userName: 'edumx25',
+                password: "1234",
+            })
+            .end(function (err, res) {
+                console.log(res.body)
+                expect(res).to.have.status(200);
+                done();
+            });
+    });
+
+});
