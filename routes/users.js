@@ -1,6 +1,6 @@
 const express = require('express');
-const userServices = require("../Controllers/usersServices");
 const router = express.Router();
+const userServices = require('../Controllers/usersServices')
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -8,5 +8,7 @@ router.get('/', function(req, res, next) {
 });
 router.get('/usernameValidate/:username',userServices.userNameValidate)
 router.get('/getAllUsers', userServices.getAllUsers)
+
+router.post('/signUp',userServices.signUp)
 
 module.exports = router;
