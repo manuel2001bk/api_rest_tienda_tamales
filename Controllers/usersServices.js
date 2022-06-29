@@ -1,5 +1,6 @@
 const usersDAO = require('../Models/usersDAO')
 const bcrypt = require('bcrypt')
+const jwt = require("../Utils/GenerateJWT")
 
 const signUp = (req, res) => {
     try {
@@ -42,7 +43,7 @@ const signUp = (req, res) => {
 const userNameValidate = (req, res) => {
     usersDAO.findByUsername(req.params.username, data => {
         try {
-            if (!data) throw new Err("Usuario disponible")
+            if (!data) throw new Error("Usuario disponible")
               res.send({
                   status: true, message: 'Usuario Existente'
               })
@@ -57,11 +58,11 @@ const userNameValidate = (req, res) => {
 const getAllUsers = (req, res) => {
     usersDAO.getAllUsers(data => {
         try {
-            if (!data) throw new Err("No existen usuarios")
+            if (!data) throw new Error("No existen usuarios")
             res.send({
                 status: true, body: data
             })
-        } catch (Err) {
+        } catch (e) {
             res.send({
                 status: false, message: 'No existen usuarios'
             })
@@ -70,37 +71,45 @@ const getAllUsers = (req, res) => {
 }
 
 const login = (req, res) => {
-    const user = {
-        userName: req.body.userName,
-        password: req.body.password,
-    }
-    usersDAO.findByUsername(user.userName, data => {
-        if (data) {
-            if (bcrypt.compareSync(user.password, data.password)) {
+    try {
+        if (!req.body.userName || !req.body.password) throw new Error("Datos incompletos")
+        if (!req.body.userName.match(/^[a-zA-Z0-9]{3,}$/)) throw new Error("Usuario invalido")
+        if (!req.body.password.match(/^[a-zA-Z0-9]{3,}$/)) throw new Error("Contraseña invalida")
+        usersDAO.findByUsername(req.body.userName, data => {
+            try {
+                if (!data) throw new Error("Usuario no existe")
+                if (!bcrypt.compareSync(req.body.password, data.password)) throw new Error("Contraseña incorrecta")
                 res.send({
                     status: true,
-                    message: 'Usuario y contraseña correcta',
-                    nombre: data.nombre,
-                    apellidoPaterno: data.apellidoPaterno,
-                    token: jwt.generateToken(data)
-                })
-            } else {
-                res.send({
-                    status: false,
-                    message: 'Contraseña incorrecta'
+                    message: 'Login exitoso',
+                    Nombre : data.nombre,
+                    apellidoPaterno : data.apellidoPaterno,
+                    token: jwt.generateToken({
+                        userName: data.userName,
+                        id: data.id
+                    }),
                 })
             }
-        } else {
-            res.send({
-                status: false,
-                message: 'La cuenta de usuario no existe'
-            })
-        }
-    })
+            catch (e) {
+                res.send({
+                    status: false,
+                    message: 'Login fallido',
+                    errorCode: e.message
+                })
+            }
+        })
+    } catch (e) {
+        res.send({
+            status: false,
+            message: "No se pudo iniciar sesion",
+            errorCode: e.message
+        })
+    }
 }
 
 module.exports = {
     signUp,
     userNameValidate,
     getAllUsers,
+    login,
 }
