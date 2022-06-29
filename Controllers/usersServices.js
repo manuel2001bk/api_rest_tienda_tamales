@@ -15,7 +15,7 @@ const userNameValidate = (req, res) => {
     })
 }
 getAllUsers = (req, res) => {
-    userDAO.getAllUsers(data => {
+    usersDao.getAllUsers(data => {
         try {
             if (!data) throw new Err("No existen usuarios")
             res.send({
