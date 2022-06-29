@@ -1,4 +1,4 @@
-const userDAO = require('../Models/usersDAO')
+const usersDAO = require('../Models/usersDAO')
 const bcrypt = require('bcrypt')
 
 const signUp = (req, res) => {
@@ -17,7 +17,7 @@ const signUp = (req, res) => {
             password: bcrypt.hashSync(req.body.password, 10),
             fechaNacimiento: req.body.fechaNacimiento,
         }
-        userDAO.insertUser(user, (data) => {
+        usersDAO.insertUser(user, (data) => {
             if (data && data.affectedRows === 1) {
                 res.send({
                     status: true,
@@ -40,7 +40,7 @@ const signUp = (req, res) => {
 }
 
 const userNameValidate = (req, res) => {
-    usersDao.findByUsername(req.params.username, data => {
+    usersDAO.findByUsername(req.params.username, data => {
         try {
             if (!data) throw new Err("Usuario disponible")
               res.send({
@@ -55,7 +55,7 @@ const userNameValidate = (req, res) => {
 }
 
 const getAllUsers = (req, res) => {
-    usersDao.getAllUsers(data => {
+    usersDAO.getAllUsers(data => {
         try {
             if (!data) throw new Err("No existen usuarios")
             res.send({
@@ -64,6 +64,36 @@ const getAllUsers = (req, res) => {
         } catch (Err) {
             res.send({
                 status: false, message: 'No existen usuarios'
+            })
+        }
+    })
+}
+
+const login = (req, res) => {
+    const user = {
+        userName: req.body.userName,
+        password: req.body.password,
+    }
+    usersDAO.findByUsername(user.userName, data => {
+        if (data) {
+            if (bcrypt.compareSync(user.password, data.password)) {
+                res.send({
+                    status: true,
+                    message: 'Usuario y contraseña correcta',
+                    nombre: data.nombre,
+                    apellidoPaterno: data.apellidoPaterno,
+                    token: jwt.generateToken(data)
+                })
+            } else {
+                res.send({
+                    status: false,
+                    message: 'Contraseña incorrecta'
+                })
+            }
+        } else {
+            res.send({
+                status: false,
+                message: 'La cuenta de usuario no existe'
             })
         }
     })
