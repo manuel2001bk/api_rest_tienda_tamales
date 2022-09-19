@@ -1,10 +1,10 @@
 const mysql = require('mysql')
 
 const config = {
-    host: 'localhost',
-    user: 'calidad_software',
+    host: 'database-tienda.cxl3tl91ae9t.us-east-1.rds.amazonaws.com',
+    user: 'admin',
     database: 'tukisoft-tamales',
-    password: 'kPLeZo%N4xbN8y&Z!x1x'
+    password: '3Ycr2Lfgo3QP4qjN9xu9'
 }
 const conn = mysql.createConnection(config);
 conn.connect(function(err) {
