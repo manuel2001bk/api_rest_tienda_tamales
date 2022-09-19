@@ -1,8 +1,8 @@
 const mysql = require('mysql')
 
 const config = {
-    host: 'database-tienda.cxl3tl91ae9t.us-east-1.rds.amazonaws.com',
-    user: 'admin',
+    host: '34.229.125.176',
+    user: 'tamales',
     database: 'tukisoft-tamales',
     password: '3Ycr2Lfgo3QP4qjN9xu9'
 }
